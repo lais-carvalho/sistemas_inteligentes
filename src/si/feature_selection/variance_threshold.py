@@ -1,7 +1,7 @@
 import numpy as np
 
-from si.base.transformer import Transformer
-from si.data.dataset import Dataset
+from src.si.base.transformer import Transformer
+from src.si.data.dataset import Dataset
 
 
 class VarianceThreshold(Transformer):

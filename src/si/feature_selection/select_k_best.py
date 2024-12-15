@@ -1,11 +1,8 @@
-from typing import Callable
-
 import numpy as np
-
+from typing import Callable
 from si.base.transformer import Transformer
 from si.data.dataset import Dataset
-from si.statistics.f_classification import f_classification
-
+from si.statistics import f_classification
 
 class SelectKBest(Transformer):
     """

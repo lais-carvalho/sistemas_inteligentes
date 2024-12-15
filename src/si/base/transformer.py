@@ -1,7 +1,7 @@
 from abc import abstractmethod
 
-from si.base.estimator import Estimator
-from si.data.dataset import Dataset
+from src.si.base.estimator import Estimator
+from src.si.data.dataset import Dataset
 
 
 class Transformer(Estimator):

@@ -1,7 +1,7 @@
 import numpy as np
 import scipy
 from scipy.stats import f_oneway
-from si.data.dataset import Dataset
+from src.si.data.dataset import Dataset
 
 
 def f_classification(dataset: Dataset) -> tuple:
@@ -20,6 +20,6 @@ def f_classification(dataset: Dataset) -> tuple:
     groups = []
     for class_ in classes:
         mask = dataset.y == class_
-        group = dataset.x[mask,:]
+        group = dataset.X[mask,:]
         groups.append(group)
     return scipy.stats.f_oneway(*groups)

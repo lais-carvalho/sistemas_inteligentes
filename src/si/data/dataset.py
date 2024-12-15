@@ -197,7 +197,77 @@ class Dataset:
         X = np.random.rand(n_samples, n_features)
         y = np.random.randint(0, n_classes, n_samples)
         return cls(X, y, features=features, label=label)
+    @classmethod
+    def dropna(self):
+        """
+        Remove todas as amostras (linhas) que contêm pelo menos um valor nulo (NaN).
+        Também atualiza o vetor y para refletir as amostras removidas.
 
+        Returns
+        -------
+        self : Dataset
+            O objeto Dataset modificado, sem valores nulos nas amostras.
+        """
+        has_na = np.isnan(self.X).any(axis=1)
+
+        self.X = self.X[~has_na]
+        if self.has_label():
+            self.y = self.y[~has_na]
+
+        return self
+
+    @classmethod
+    def fillna(self, value : Union[float, str]):
+        """
+        Substitui todos os valores nulos por um valor específico,
+        ou pela média ou mediana do feature.
+
+        Parameters
+        ----------
+        value : float, "mean" ou "median"
+            O valor a ser usado para substituir valores nulos.
+
+        Returns
+        -------
+        self : Dataset
+            O objeto Dataset modificado.
+        """
+        has_na = np.isnan(self.X)
+
+        n_features = self.X.shape[1]
+
+        for i in range(n_features):
+            if np.any(has_na[:, i]):
+                if value == "mean":
+                    mean_value = np.nanmean(self.X[:, i])
+                    self.X[has_na[:, i], i] = mean_value
+                elif value == "median":
+                    median_value = np.nanmedian(self.X[:, i])
+                    self.X[has_na[:, i], i] = median_value
+                else:
+                    self.X[has_na[:, i], i] = value
+        return self
+    @classmethod
+    def remove_by_index(self, index: int):
+        """
+        Remove uma amostra do X a partir de um indice de interesse, reflete essa mudança no y.
+
+        Parameters
+        ----------
+        index : int
+            O indice a ser removido de X e do y.
+
+        Returns
+        -------
+        self : Dataset
+            O objeto Dataset modificado.
+        """
+        self.X = np.delete(self.X, index, axis = 0)
+
+        if self.has_label():
+            self.y = np.delete(self.y, index)
+
+        return self
 
 if __name__ == '__main__':
     X = np.array([[1, 2, 3], [4, 5, 6]])

@@ -1,6 +1,6 @@
 from abc import abstractmethod, ABCMeta
 
-from si.data.dataset import Dataset
+from src.si.data.dataset import Dataset
 
 
 class Estimator(metaclass=ABCMeta):
