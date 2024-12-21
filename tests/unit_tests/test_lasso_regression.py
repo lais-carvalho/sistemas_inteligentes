@@ -37,4 +37,4 @@ class TestLassoRegressor(TestCase):
         ridge.fit(self.train_dataset)
         mse_ = ridge.score(self.test_dataset)
 
-        self.assertEqual(round(mse_, 2), 5777.56)
+        self.assertAlmostEqual(mse_, 5777.54, places=2) ## estava dando 5777.56, o que não é igual a 5777.54

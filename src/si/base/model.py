@@ -1,10 +1,10 @@
 from abc import ABCMeta, ABC, abstractmethod
 
-from si.base.estimator import Estimator
+from src.si.base.estimator import Estimator
 
 import numpy as np
 
-from si.data.dataset import Dataset
+from src.si.data.dataset import Dataset
 
 
 class Model(Estimator, ABC):

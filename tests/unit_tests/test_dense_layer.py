@@ -9,7 +9,7 @@ import os
 
 from si.io.data_file import read_data_file
 from si.model_selection.split import train_test_split
-from si.neural_networks.layers import DenseLayer
+from si.neural_networks.layers import DenseLayer, Dropout
 from si.neural_networks.optimizers import Optimizer
 
 class MockOptimizer(Optimizer):
@@ -48,3 +48,5 @@ class TestDenseLayer(TestCase):
         input_error = dense_layer.backward_propagation(output_error=np.random.random((self.dataset.X.shape[0], 30)))
         self.assertEqual(input_error.shape[0], self.dataset.X.shape[0])
         self.assertEqual(input_error.shape[1], 9)
+
+

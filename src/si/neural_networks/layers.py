@@ -140,4 +140,38 @@ class DenseLayer(Layer):
         tuple
             The shape of the output of the layer.
         """
-        return (self.n_units,) 
+        return (self.n_units,)
+
+class Dropout:
+    def __init__(self, probability: float):
+
+        if not (0 <= probability <= 1):
+            raise ValueError("Dropout probability must be between 0 and 1.")
+        self.probability = probability
+        self.mask = None
+        self.input = None
+        self.output = None
+
+    def forward_propagation(self, input: np.ndarray, training: bool) -> np.ndarray:
+
+        self.input = input
+        if training:
+            scaling_factor = 1 / (1 - self.probability)
+
+            self.mask = np.random.binomial(1, 1 - self.probability, size=input.shape)
+
+            self.output = input * self.mask * scaling_factor
+        else:
+            self.output = input
+        return self.output
+
+    def backward_propagation(self, output_error: np.ndarray) -> float:
+        return output_error * self.mask
+
+    def output_shape(self) -> tuple:
+
+        return self.input.shape if self.input is not None else None
+
+    def parameters(self) -> int:
+
+        return 0

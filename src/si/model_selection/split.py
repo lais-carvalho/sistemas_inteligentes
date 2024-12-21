@@ -1,9 +1,6 @@
-from typing import Tuple
-
 import numpy as np
-
-from si.data.dataset import Dataset
-
+from src.si.data.dataset import Dataset
+from typing import Tuple
 
 def train_test_split(dataset: Dataset, test_size: float = 0.2, random_state: int = 42) -> Tuple[Dataset, Dataset]:
     """
@@ -40,4 +37,26 @@ def train_test_split(dataset: Dataset, test_size: float = 0.2, random_state: int
     # get the training and testing datasets
     train = Dataset(dataset.X[train_idxs], dataset.y[train_idxs], features=dataset.features, label=dataset.label)
     test = Dataset(dataset.X[test_idxs], dataset.y[test_idxs], features=dataset.features, label=dataset.label)
+    return train, test
+
+def stratified_train_test_split(dataset: Dataset, test_size: float = 0.2, random_state: int = 42) -> Tuple[Dataset, Dataset]:
+    np.random.seed(random_state)
+    unique_classes, class_counts = np.unique(dataset.y, return_counts=True)
+    idxs_train =[]
+    idxs_test = []
+    for class_l, class_count in zip(unique_classes, class_counts):
+        n_test_samples = int(class_count * test_size)
+
+        class_idxs = np.where(dataset.y == class_l)[0]
+        np.random.shuffle(class_idxs)
+
+        test_class_indices = class_idxs[:n_test_samples]
+
+        train_class_indices = class_idxs[n_test_samples:]
+
+        idxs_test.extend(test_class_indices)
+        idxs_train.extend(train_class_indices)
+
+    train = Dataset(dataset.X[idxs_train], dataset.y[idxs_train], features=dataset.features, label=dataset.label)
+    test = Dataset(dataset.X[idxs_test], dataset.y[idxs_test], features=dataset.features, label=dataset.label)
     return train, test
