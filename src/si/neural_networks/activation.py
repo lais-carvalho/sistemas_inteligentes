@@ -3,7 +3,7 @@ from typing import Union
 
 import numpy as np
 
-from si.neural_networks.layers import Layer
+from src.si.neural_networks.layers import Layer
 
 
 class ActivationLayer(Layer):
@@ -177,3 +177,29 @@ class ReLUActivation(ActivationLayer):
             The derivative of the activation function.
         """
         return np.where(input >= 0, 1, 0)
+
+class TanhActivation(ActivationLayer):
+    """
+    TanhActivation activation function.
+    """
+
+    def activation_function(self, input: np.ndarray):
+
+        return np.tanh(input)
+
+    def derivative(self, input: np.ndarray):
+        tanh = self.activation_function(input)
+        return 1 - tanh ** 2
+
+class SoftmaxActivation(ActivationLayer):
+    """
+    SoftmaxActivation activation function.
+    """
+
+    def activation_function(self, input: np.ndarray):
+        exp_shifted = np.exp(input - np.max(input, axis=-1, keepdims=True))
+        return exp_shifted / np.sum(exp_shifted, axis=-1, keepdims=True)
+
+    def derivative(self, input: np.ndarray):
+        softmax = self.activation_function(input)
+        return softmax * (1 - softmax)

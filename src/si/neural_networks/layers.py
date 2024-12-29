@@ -3,7 +3,7 @@ import copy
 
 import numpy as np
 
-from si.neural_networks.optimizers import Optimizer
+from src.si.neural_networks.optimizers import Optimizer
 
 
 class Layer(metaclass=ABCMeta):
@@ -170,7 +170,7 @@ class Dropout:
 
     def output_shape(self) -> tuple:
 
-        return self.input.shape if self.input is not None else None
+        return self._input_shape if self.input is not None else None
 
     def parameters(self) -> int:
 

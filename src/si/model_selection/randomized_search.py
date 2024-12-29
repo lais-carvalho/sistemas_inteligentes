@@ -3,8 +3,8 @@ import itertools
 
 import numpy as np
 
-from si.data.dataset import Dataset
-from si.model_selection.cross_validate import k_fold_cross_validation
+from src.si.data.dataset import Dataset
+from src.si.model_selection.cross_validate import k_fold_cross_validation
 
 
 def randomized_search_cv(model,

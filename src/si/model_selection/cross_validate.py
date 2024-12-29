@@ -2,7 +2,7 @@ from typing import List
 
 import numpy as np
 
-from si.data.dataset import Dataset
+from src.si.data.dataset import Dataset
 
 
 def k_fold_cross_validation(model, dataset: Dataset, scoring: callable = None, cv: int = 3,

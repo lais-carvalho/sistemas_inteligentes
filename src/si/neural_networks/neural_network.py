@@ -2,12 +2,12 @@ from typing import Tuple, Iterator
 
 import numpy as np
 
-from si.base.model import Model
-from si.data.dataset import Dataset
-from si.neural_networks.layers import Layer
-from si.neural_networks.losses import LossFunction, MeanSquaredError
-from si.neural_networks.optimizers import Optimizer, SGD
-from si.metrics.mse import mse
+from src.si.base.model import Model
+from src.si.data.dataset import Dataset
+from src.si.neural_networks.layers import Layer
+from src.si.neural_networks.losses import LossFunction, MeanSquaredError
+from src.si.neural_networks.optimizers import Optimizer, SGD
+from src.si.metrics.mse import mse
 
 
 class NeuralNetwork(Model):
@@ -263,6 +263,7 @@ if __name__ == '__main__':
     # test
     out = net.predict(dataset)
     print(out[:3])
+
     out2 = net.predict(dataset)
     print(out2[:3])
 

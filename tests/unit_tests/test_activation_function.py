@@ -1,12 +1,13 @@
 from unittest import TestCase
 
 from datasets import DATASETS_PATH
+import numpy as np
 
 import os
 
 from si.io.data_file import read_data_file
 from si.model_selection.split import train_test_split
-from si.neural_networks.activation import ReLUActivation, SigmoidActivation
+from si.neural_networks.activation import ReLUActivation, SigmoidActivation, TanhActivation, SoftmaxActivation
 
 class TestSigmoidLayer(TestCase):
 
@@ -54,3 +55,36 @@ class TestRELULayer(TestCase):
         derivative = sigmoid_layer.derivative(self.dataset.X)
         self.assertEqual(derivative.shape[0], self.dataset.X.shape[0])
         self.assertEqual(derivative.shape[1], self.dataset.X.shape[1])
+
+class TestTanhActivation(TestCase):
+    def setUp(self):
+        self.csv_file = os.path.join(DATASETS_PATH, 'breast_bin', 'breast-bin.csv')
+
+        self.dataset = read_data_file(filename=self.csv_file, label=True, sep=",")
+        self.input_data= self.dataset.X
+    def test_activation_function(self):
+        tanh_layer = TanhActivation()
+        result = tanh_layer.activation_function(self.input_data)
+        self.assertTrue(np.all(result <= 1) and np.all(result >= -1))
+    def test_derivative(self):
+        tanh_layer = TanhActivation()
+        derivative = tanh_layer.derivative(self.input_data)
+        self.assertEqual(derivative.shape[0], self.input_data.shape[0])
+        self.assertEqual(derivative.shape[1], self.input_data.shape[1])
+        self.assertTrue(np.all(derivative <= 1) and np.all(derivative >= 0))
+
+class TestSoftmaxActivation(TestCase):
+    def setUp(self):
+        self.csv_file = os.path.join(DATASETS_PATH, 'breast_bin', 'breast-bin.csv')
+
+        self.dataset = read_data_file(filename=self.csv_file, label=True, sep=",")
+        self.input_data = self.dataset.X
+    def test_activation_function(self):
+        softmax_layer = SoftmaxActivation()
+        result = softmax_layer.activation_function(self.input_data)
+        self.assertTrue(np.all(np.isclose(np.sum(result, axis=1), 1)))
+    def test_derivative(self):
+        softmax_layer = SoftmaxActivation()
+        derivative = softmax_layer.derivative(self.input_data)
+        self.assertEqual(derivative.shape[0], self.input_data.shape[0])
+        self.assertEqual(derivative.shape[1], self.input_data.shape[1])
